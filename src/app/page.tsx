@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/context/AuthContext';
 import { 
   Coffee, 
   ArrowRight, 
@@ -11,27 +12,75 @@ import {
   HeartPulse,
   Clock,
   Sparkles,
-  ChevronDown,
   Eye,
   EyeOff,
   Sliders,
   CheckCircle,
-  FileCheck
+  FileCheck,
+  Loader2,
+  LockKeyhole
 } from 'lucide-react';
 
 export default function LandoLandingPage() {
   const router = useRouter();
+  const { signIn, profile, loading } = useAuth();
   
-  // Estados para simulações interativas na página
+  // Estados para simulações interativas na Landing Page (Lando Norris style - Light Mode)
   const [simulatedCredits, setSimulatedCredits] = useState(8.0);
   const [privacyMode, setPrivacyMode] = useState<'traditional' | 'azuos'>('azuos');
   const [selectedFeature, setSelectedFeature] = useState<number>(0);
+  
+  // Estado para formulário de login real
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleLogin = (role: 'colaborador' | 'gestor') => {
-    if (role === 'gestor') {
-      router.push('/dashboard/gestor');
-    } else {
-      router.push('/dashboard/colaborador');
+  // Redirecionamento automático se estiver logado
+  useEffect(() => {
+    if (!loading && profile) {
+      if (profile.is_hr) {
+        router.push('/dashboard/rh');
+      } else if (profile.role === 'manager') {
+        router.push('/dashboard/gestor');
+      } else {
+        router.push('/dashboard/colaborador');
+      }
+    }
+  }, [profile, loading, router]);
+
+  const handleRealLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) {
+      setLoginError('Por favor, insira o e-mail e a senha.');
+      return;
+    }
+    setSubmitting(true);
+    setLoginError('');
+    try {
+      const { error } = await signIn(email, password);
+      if (error) {
+        setLoginError(error);
+      }
+    } catch (err: any) {
+      setLoginError(err.message || 'Erro ao realizar login.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // Preenchimento de teste rápido (Preenche os inputs, mas obriga a fazer login real)
+  const handleQuickFill = (role: 'colaborador' | 'gestor' | 'rh') => {
+    setLoginError('');
+    if (role === 'colaborador') {
+      setEmail('colaborador@azuos.com.br');
+      setPassword('password123');
+    } else if (role === 'gestor') {
+      setEmail('gestor@azuos.com.br');
+      setPassword('password123');
+    } else if (role === 'rh') {
+      setEmail('rh@azuos.com.br');
+      setPassword('password123');
     }
   };
 
@@ -41,7 +90,7 @@ export default function LandoLandingPage() {
 
   const features = [
     {
-      title: 'Sistema de Créditos',
+      title: 'Sistema de Créditos de Flexibilidade',
       description: 'Cada colaborador elegível recebe 8 horas de flexibilização semanais. Solicite pausas sem precisar expor os detalhes do seu compromisso.',
       icon: Clock,
       badge: 'Regra RN01'
@@ -61,90 +110,103 @@ export default function LandoLandingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans relative overflow-x-hidden selection:bg-emerald-500 selection:text-slate-950">
+    <div className="min-h-screen bg-[#F8FAF8] text-slate-800 font-sans relative overflow-x-hidden selection:bg-[#aaffd8] selection:text-slate-900">
       
-      {/* Background Dinâmico com Grade e Brilhos Neon */}
-      <div className="absolute inset-0 bg-grid-glow opacity-60 z-0 pointer-events-none" />
-      <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[50%] bg-emerald-500/10 rounded-full blur-[150px] animate-glow pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[50%] bg-teal-500/10 rounded-full blur-[150px] animate-glow pointer-events-none" />
+      {/* Background Gradients (Tema Claro Premium com cores do projeto) */}
+      <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[50%] bg-[#6CBED9]/5 rounded-full blur-[150px] pointer-events-none animate-glow" />
+      <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[50%] bg-[#30728d]/5 rounded-full blur-[150px] pointer-events-none animate-glow" />
 
       {/* 1. Header Premium */}
-      <header className="px-8 py-6 max-w-7xl mx-auto flex items-center justify-between border-b border-slate-900/60 backdrop-blur-md relative z-10">
+      <header className="px-8 py-6 max-w-7xl mx-auto flex items-center justify-between border-b border-slate-200/80 backdrop-blur-md relative z-10">
         <div className="flex items-center gap-3">
-          <div className="bg-emerald-500 text-slate-950 p-2.5 rounded-xl font-bold flex items-center justify-center shadow-lg shadow-emerald-500/20">
-            <Coffee className="w-5 h-5" />
+          {/* ESPAÇO PARA O LOGO EM PNG DO USUÁRIO */}
+          <div className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-[#6CBED9] to-[#30728d] text-white font-bold shadow-md overflow-hidden">
+            {/* 
+              <img 
+                src="/logo.png" 
+                alt="Azuos Logo" 
+                className="w-full h-full object-contain" 
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
+              />
+            */}
+            <Coffee className="w-5 h-5 text-white relative z-10" />
           </div>
           <div>
-            <span className="font-extrabold text-xl tracking-wider bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-500 bg-clip-text text-transparent">
+            <span className="font-black text-xl tracking-wider bg-gradient-to-r from-[#30728d] to-[#6CBED9] bg-clip-text text-transparent">
               AZUOS
             </span>
-            <span className="block text-[8px] text-slate-500 uppercase tracking-widest font-semibold mt-0.5">
+            <span className="block text-[8px] text-[#30728d] uppercase tracking-widest font-bold mt-0.5">
               Workflow Manager
             </span>
           </div>
         </div>
 
-        <nav className="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-400">
-          <a href="#features" className="hover:text-emerald-400 transition-colors">Produtos</a>
-          <a href="#demo" className="hover:text-emerald-400 transition-colors">Simulador</a>
-          <a href="#acesso" className="hover:text-emerald-400 transition-colors">Acessar Painel</a>
+        <nav className="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-wider text-slate-500">
+          <a href="#features" className="hover:text-[#30728d] transition-colors">Diferenciais</a>
+          <a href="#demo" className="hover:text-[#30728d] transition-colors">Simulador</a>
+          <a href="#acesso" className="hover:text-[#30728d] transition-colors">Entrar</a>
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div>
           <a 
             href="#acesso" 
-            className="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-all duration-300 shadow-lg shadow-emerald-500/10 hover:shadow-emerald-500/20 hover:scale-102"
+            className="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#30728d] text-white hover:bg-[#30728d]/95 transition-all duration-300 shadow-md shadow-[#30728d]/10 hover:scale-102"
           >
-            Acessar Dashboard
+            Acessar Painel
           </a>
         </div>
       </header>
 
-      {/* 2. Hero Section */}
-      <section className="relative z-10 px-8 py-20 max-w-7xl mx-auto flex flex-col items-center text-center">
+      {/* 2. Hero Section (Tema Claro Estilo Lando Norris) */}
+      <section className="relative z-10 px-8 py-24 max-w-7xl mx-auto flex flex-col items-center text-center">
         {/* Badge Flutuante */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/80 border border-slate-800 text-xs text-slate-300 mb-8 animate-float">
-          <Sparkles className="w-4 h-4 text-emerald-400" />
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 text-xs text-slate-655 mb-8 shadow-sm">
+          <Sparkles className="w-4 h-4 text-[#30728d]" />
           <span>Gestão por resultados e autonomia flexível</span>
         </div>
 
-        {/* Headline Titânica Estilo Lando Norris */}
-        <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none max-w-5xl select-none">
-          <span className="text-slate-100">Produtividade Sem</span>
-          <span className="block text-stroke text-stroke-hover transition-all duration-300">
-            Vigilância Invasiva
+        {/* Headline Titânica Estilo Norris em Tema Claro */}
+        <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none max-w-5xl select-none text-[#30728d]">
+          <span>PRODUTIVIDADE SEM</span>
+          <span 
+            className="block text-transparent transition-all duration-300"
+            style={{ WebkitTextStroke: '2px #30728d' }}
+          >
+            VIGILÂNCIA INVASIVA
           </span>
         </h1>
 
-        <p className="text-slate-400 text-sm md:text-lg max-w-2xl mt-8 leading-relaxed">
-          Substitua o monitoramento invasivo por um ecossistema semanal baseado em créditos de flexibilidade de tempo. Segurança jurídica (LGPD e NR-01) com autonomia total do colaborador.
+        <p className="text-slate-600 text-sm md:text-base max-w-2xl mt-8 leading-relaxed">
+          Substitua o monitoramento ostensivo por um ecossistema semanal baseado em créditos de tempo. Segurança jurídica completa alinhada à <strong className="text-[#30728d]">LGPD</strong> e à <strong className="text-[#30728d]">NR-01</strong> com autonomia para o colaborador.
         </p>
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-4 mt-12 w-full sm:w-auto">
           <a 
             href="#acesso" 
-            className="px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-all duration-300 flex items-center justify-center gap-2 group shadow-xl shadow-emerald-500/10"
+            className="px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest bg-[#30728d] text-white hover:bg-[#30728d]/95 transition-all duration-300 flex items-center justify-center gap-2 group shadow-lg shadow-[#30728d]/10"
           >
-            Entrar na Plataforma
+            Acessar Dashboard
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </a>
           <a 
             href="#features" 
-            className="px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest border border-slate-800 hover:border-slate-700 bg-slate-950/40 text-slate-300 hover:text-slate-200 transition-all duration-300 flex items-center justify-center"
+            className="px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest border border-slate-200 hover:bg-white text-slate-600 hover:text-slate-800 transition-all duration-300 flex items-center justify-center"
           >
             Conhecer os Recursos
           </a>
         </div>
       </section>
 
-      {/* 3. Seção de Demonstração de Recursos (Produtos / Utilização) */}
-      <section id="features" className="relative z-10 px-8 py-20 max-w-7xl mx-auto border-t border-slate-900/60">
+      {/* 3. Diferenciais & Simulador Interativo */}
+      <section id="features" className="relative z-10 px-8 py-20 max-w-7xl mx-auto border-t border-slate-200">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <p className="text-xs font-bold uppercase text-emerald-400 tracking-widest mb-2">Nosso Diferencial</p>
-            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-slate-100">
-              Pilares do Azuos
+            <p className="text-xs font-bold uppercase text-[#30728d] tracking-widest mb-2">Pilares do Azuos</p>
+            <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-slate-850">
+              Autonomia & Privacidade
             </h2>
             
             <div className="space-y-4 mt-8">
@@ -158,25 +220,25 @@ export default function LandoLandingPage() {
                     onClick={() => setSelectedFeature(index)}
                     className={`p-5 rounded-2xl border transition-all duration-300 cursor-pointer ${
                       isSelected 
-                        ? 'bg-slate-900/60 border-emerald-500/30' 
-                        : 'bg-slate-950 border-slate-900/80 hover:border-slate-800'
+                        ? 'bg-white border-[#30728d]/30 shadow-md' 
+                        : 'bg-white/60 border-slate-200 hover:border-slate-350'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className={`p-2 rounded-lg ${
-                          isSelected ? 'bg-emerald-500/10 text-emerald-400' : 'bg-slate-900 text-slate-500'
+                          isSelected ? 'bg-[#30728d]/10 text-[#30728d]' : 'bg-slate-100 text-slate-400'
                         }`}>
                           <Icon className="w-5 h-5" />
                         </div>
-                        <h4 className="font-bold text-sm text-slate-200">{feat.title}</h4>
+                        <h4 className="font-bold text-sm text-slate-800">{feat.title}</h4>
                       </div>
-                      <span className="text-[10px] font-bold text-slate-500 bg-slate-900 px-2 py-0.5 rounded">
+                      <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
                         {feat.badge}
                       </span>
                     </div>
                     {isSelected && (
-                      <p className="text-xs text-slate-400 mt-3 leading-relaxed">
+                      <p className="text-xs text-slate-600 mt-3 leading-relaxed">
                         {feat.description}
                       </p>
                     )}
@@ -186,33 +248,32 @@ export default function LandoLandingPage() {
             </div>
           </div>
 
-          {/* Simulador Interativo ao Lado */}
-          <div id="demo" className="bg-slate-900/40 border border-slate-850 p-8 rounded-3xl backdrop-blur-md relative animate-float">
-            <div className="absolute -top-3 -right-3 bg-emerald-500 text-slate-950 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-lg">
+          {/* Simulador Interativo */}
+          <div id="demo" className="bg-white border border-slate-200 p-8 rounded-3xl relative shadow-md">
+            <div className="absolute -top-3 -right-3 bg-gradient-to-r from-[#6CBED9] to-[#30728d] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-lg">
               <Sparkles className="w-3 h-3" /> Interativo
             </div>
 
-            <h3 className="text-lg font-bold text-slate-100 mb-6">Simulador Azuos em Tempo Real</h3>
+            <h3 className="text-lg font-bold text-slate-805 mb-6">Simulador Azuos em Tempo Real</h3>
 
-            {/* Painel do Simulador de Créditos */}
             <div className="space-y-6">
-              <div className="bg-slate-950 p-6 rounded-2xl border border-slate-850 flex items-center justify-between">
+              <div className="bg-[#F8FAF8] p-6 rounded-2xl border border-slate-200 flex items-center justify-between">
                 <div>
                   <p className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Saldo de Horas Restante</p>
-                  <h4 className="text-3xl font-extrabold mt-1 text-slate-200">{simulatedCredits.toFixed(1)}h</h4>
+                  <h4 className="text-3xl font-extrabold mt-1 text-slate-800">{simulatedCredits.toFixed(1)}h</h4>
                 </div>
                 <div className="flex items-center gap-2">
                   <button 
                     onClick={() => handleSimulatePause(0.5)}
-                    className="px-3 py-1.5 text-[10px] font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-all"
+                    className="px-3 py-1.5 text-[10px] font-semibold bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 rounded-lg transition-all cursor-pointer"
                   >
-                    Simular -0.5h
+                    Pausa -0.5h
                   </button>
                   <button 
                     onClick={() => handleSimulatePause(2.0)}
-                    className="px-3 py-1.5 text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 rounded-lg transition-all"
+                    className="px-3 py-1.5 text-[10px] font-semibold bg-[#30728d]/10 text-[#30728d] border border-[#30728d]/20 hover:bg-[#30728d]/20 rounded-lg transition-all cursor-pointer"
                   >
-                    Simular -2.0h
+                    Ausência -2.0h
                   </button>
                 </div>
               </div>
@@ -220,20 +281,20 @@ export default function LandoLandingPage() {
               {/* Comparador de Privacidade */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider">Modo de Privacidade</h4>
-                  <div className="flex bg-slate-950 border border-slate-850 p-1 rounded-lg">
+                  <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider">Modo de Monitoramento</h4>
+                  <div className="flex bg-[#F8FAF8] border border-slate-200 p-1 rounded-lg">
                     <button 
                       onClick={() => setPrivacyMode('traditional')}
-                      className={`px-3 py-1 text-[10px] font-semibold rounded-md transition-all ${
-                        privacyMode === 'traditional' ? 'bg-rose-500/20 text-rose-400' : 'text-slate-500'
+                      className={`px-3 py-1 text-[10px] font-semibold rounded-md transition-all cursor-pointer ${
+                        privacyMode === 'traditional' ? 'bg-rose-100 text-rose-700' : 'text-slate-400'
                       }`}
                     >
                       Invasivo
                     </button>
                     <button 
                       onClick={() => setPrivacyMode('azuos')}
-                      className={`px-3 py-1 text-[10px] font-semibold rounded-md transition-all ${
-                        privacyMode === 'azuos' ? 'bg-emerald-500/20 text-emerald-400' : 'text-slate-500'
+                      className={`px-3 py-1 text-[10px] font-semibold rounded-md transition-all cursor-pointer ${
+                        privacyMode === 'azuos' ? 'bg-[#30728d]/10 text-[#30728d]' : 'text-slate-400'
                       }`}
                     >
                       Azuos
@@ -241,29 +302,29 @@ export default function LandoLandingPage() {
                   </div>
                 </div>
 
-                <div className="bg-slate-950 p-5 rounded-2xl border border-slate-850">
+                <div className="bg-[#F8FAF8] p-5 rounded-2xl border border-slate-200">
                   {privacyMode === 'traditional' ? (
                     <div className="space-y-2 text-xs">
-                      <p className="text-rose-400 font-bold flex items-center gap-1.5">
-                        <EyeOff className="w-3.5 h-3.5" /> Monitoramento Tradicional
+                      <p className="text-rose-600 font-bold flex items-center gap-1.5">
+                        <EyeOff className="w-3.5 h-3.5" /> Monitoramento Tradicional (Espionagem)
                       </p>
-                      <div className="bg-slate-900 p-3 rounded-lg font-mono text-[10px] text-slate-500 space-y-1">
-                        <p className="text-rose-300">[LOG] 10:14 - Captura de tela tirada (janela ativa: Youtube)</p>
-                        <p className="text-rose-300">[LOG] 10:15 - Detecção de ausência do teclado e webcam ligada</p>
-                        <p className="text-rose-400">[LOG] 10:16 - Alerta: Gabriela inativa por mais de 5 minutos</p>
+                      <div className="bg-white border border-slate-200 p-3 rounded-lg font-mono text-[10px] text-rose-700 space-y-1">
+                        <p>[LOG] 10:14 - Webcam ativada (Monitoramento de Olhos)</p>
+                        <p>[LOG] 10:15 - Captura de tela registrada (Janela ativa: Outlook)</p>
+                        <p>[LOG] 10:16 - Alerta: Gabriela inativa por mais de 3 minutos</p>
                       </div>
                     </div>
                   ) : (
                     <div className="space-y-2 text-xs">
-                      <p className="text-emerald-400 font-bold flex items-center gap-1.5">
-                        <Eye className="w-3.5 h-3.5" /> Visão Azuos (Privacy by Design)
+                      <p className="text-emerald-700 font-bold flex items-center gap-1.5">
+                        <Eye className="w-3.5 h-3.5 text-emerald-600" /> Visão Azuos (Privacy by Design)
                       </p>
-                      <div className="bg-slate-900 p-3 rounded-lg font-mono text-[10px] text-slate-400 space-y-1">
-                        <p className="text-emerald-300 flex items-center gap-1.5">
-                          <CheckCircle className="w-3 h-3 text-emerald-400" />
-                          <span>10:00 - 12:00: Bloco de Flexibilização ocupado (Consulta Médica)</span>
+                      <div className="bg-white border border-slate-200 p-3 rounded-lg font-mono text-[10px] text-slate-650 space-y-1">
+                        <p className="text-emerald-750 flex items-center gap-1.5 font-semibold">
+                          <CheckCircle className="w-3 h-3 text-emerald-600" />
+                          <span>10:00 - 12:00: Bloco Reservado (Consulta Médica)</span>
                         </p>
-                        <p className="text-slate-500">Nenhum dado pessoal, log de teclas ou imagem capturada.</p>
+                        <p className="text-slate-400">Sem rastreamento de webcam, telas ou teclas.</p>
                       </div>
                     </div>
                   )}
@@ -274,75 +335,141 @@ export default function LandoLandingPage() {
         </div>
       </section>
 
-      {/* 4. Acesso ao Dashboard (Seção de Conversão) */}
-      <section id="acesso" className="relative z-10 px-8 py-24 max-w-7xl mx-auto border-t border-slate-900/60">
+      {/* 4. Login Real com Supabase Auth */}
+      <section id="acesso" className="relative z-10 px-8 py-24 max-w-7xl mx-auto border-t border-slate-200">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="text-xs font-bold uppercase text-emerald-400 tracking-widest mb-2">Simulação Rápida</p>
-          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-slate-100">
-            Entre na Plataforma
+          <p className="text-xs font-bold uppercase text-[#30728d] tracking-widest mb-2">Portal Corporativo</p>
+          <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-slate-850">
+            Acessar o Painel
           </h2>
-          <p className="text-slate-400 text-sm mt-4">
-            Escolha o perfil do MVP para acessar as visões completas da aplicação.
+          <p className="text-slate-500 text-sm mt-4">
+            Faça login com as credenciais da sua conta Supabase Auth ou utilize as opções rápidas para carregar os e-mails de teste.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          {/* Card Colaborador */}
-          <div 
-            onClick={() => handleLogin('colaborador')}
-            className="p-8 rounded-3xl border border-slate-850 bg-slate-900/20 hover:bg-emerald-500/5 hover:border-emerald-500/30 transition-all duration-300 group cursor-pointer hover:scale-103 relative"
-          >
-            <div className="absolute top-6 right-6 w-8 h-8 rounded-full bg-slate-800 group-hover:bg-emerald-500 group-hover:text-slate-950 flex items-center justify-center transition-all duration-300 text-slate-400">
-              <ArrowRight className="w-4 h-4 group-hover:rotate-[-45deg] transition-all" />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl mx-auto items-stretch">
+          
+          {/* Contas de Avaliação */}
+          <div className="bg-white border border-slate-200 p-8 rounded-3xl flex flex-col justify-between space-y-6 shadow-md">
+            <div>
+              <h3 className="text-xl font-extrabold text-[#30728d] flex items-center gap-2">
+                <Sliders className="w-5 h-5 text-[#30728d]" /> Contas de Testes
+              </h3>
+              <p className="text-xs text-slate-500 mt-2">
+                Clique em um dos perfis abaixo para preencher o formulário automaticamente com o e-mail de teste correspondente:
+              </p>
             </div>
 
-            <div className="p-4 bg-slate-900/80 text-emerald-400 w-fit rounded-2xl mb-6 group-hover:bg-emerald-500/10 transition-colors">
-              <User className="w-6 h-6" />
+            <div className="space-y-4">
+              {/* Colaborador */}
+              <button 
+                onClick={() => handleQuickFill('colaborador')}
+                className="w-full text-left p-4 bg-[#F8FAF8] border border-slate-200 hover:border-[#6CBED9] rounded-2xl flex items-center justify-between group transition-all cursor-pointer"
+              >
+                <div>
+                  <h4 className="font-bold text-sm text-slate-800 group-hover:text-[#30728d]">Portal do Colaborador</h4>
+                  <p className="text-[10px] text-slate-500 mt-1">colaborador@azuos.com.br</p>
+                </div>
+                <div className="p-2 bg-[#6CBED9]/10 text-[#30728d] rounded-xl">
+                  <User className="w-4 h-4" />
+                </div>
+              </button>
+
+              {/* Gestor */}
+              <button 
+                onClick={() => handleQuickFill('gestor')}
+                className="w-full text-left p-4 bg-[#F8FAF8] border border-slate-200 hover:border-[#6CBED9] rounded-2xl flex items-center justify-between group transition-all cursor-pointer"
+              >
+                <div>
+                  <h4 className="font-bold text-sm text-slate-805 group-hover:text-[#30728d]">Portal do Gestor</h4>
+                  <p className="text-[10px] text-slate-500 mt-1">gestor@azuos.com.br</p>
+                </div>
+                <div className="p-2 bg-[#30728d]/10 text-[#30728d] rounded-xl">
+                  <Shield className="w-4 h-4" />
+                </div>
+              </button>
+
+              {/* RH */}
+              <button 
+                onClick={() => handleQuickFill('rh')}
+                className="w-full text-left p-4 bg-[#F8FAF8] border border-slate-200 hover:border-[#6CBED9] rounded-2xl flex items-center justify-between group transition-all cursor-pointer"
+              >
+                <div>
+                  <h4 className="font-bold text-sm text-slate-805 group-hover:text-[#30728d]">Portal do RH</h4>
+                  <p className="text-[10px] text-slate-500 mt-1">rh@azuos.com.br</p>
+                </div>
+                <div className="p-2 bg-emerald-50 text-emerald-700 rounded-xl border border-emerald-100">
+                  <FileCheck className="w-4 h-4" />
+                </div>
+              </button>
             </div>
 
-            <h3 className="text-xl font-bold text-slate-200 group-hover:text-emerald-400 transition-colors">
-              Portal do Colaborador
-            </h3>
-            <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-              Veja a agenda semanal de prazos, controle seu saldo de 8 horas e envie atestados médicos com privacidade garantida.
-            </p>
-            <div className="flex items-center gap-2 mt-6 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-              <FileCheck className="w-4 h-4 text-emerald-500/60" />
-              <span>Simular Gabriela Silva</span>
+            <div className="p-4 bg-[#F8FAF8] rounded-xl border border-slate-200 text-[10px] text-slate-500 leading-relaxed">
+              * Nota: A senha de todos os usuários no Supabase deve ser configurada como <strong className="text-slate-700 font-bold">password123</strong> para corresponder aos testes rápidos do formulário.
             </div>
           </div>
 
-          {/* Card Gestor */}
-          <div 
-            onClick={() => handleLogin('gestor')}
-            className="p-8 rounded-3xl border border-slate-850 bg-slate-900/20 hover:bg-purple-500/5 hover:border-purple-500/30 transition-all duration-300 group cursor-pointer hover:scale-103 relative"
-          >
-            <div className="absolute top-6 right-6 w-8 h-8 rounded-full bg-slate-800 group-hover:bg-purple-500 group-hover:text-slate-950 flex items-center justify-center transition-all duration-300 text-slate-400">
-              <ArrowRight className="w-4 h-4 group-hover:rotate-[-45deg] transition-all" />
-            </div>
-
-            <div className="p-4 bg-slate-900/80 text-purple-400 w-fit rounded-2xl mb-6 group-hover:bg-purple-500/10 transition-colors">
-              <Shield className="w-6 h-6" />
-            </div>
-
-            <h3 className="text-xl font-bold text-slate-200 group-hover:text-purple-400 transition-colors">
-              Portal do Gestor
+          {/* Form Real Supabase Auth */}
+          <div className="bg-white border border-slate-200 p-8 rounded-3xl flex flex-col justify-center shadow-md text-slate-700">
+            <h3 className="text-xl font-extrabold text-slate-805 mb-6 flex items-center gap-2">
+              <LockKeyhole className="w-5 h-5 text-[#30728d]" /> Credenciais Supabase Auth
             </h3>
-            <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-              Monitore o throughput semanal da equipe por gráficos, gerencie créditos de folgas e controle a elegibilidade jurídica de cargos.
-            </p>
-            <div className="flex items-center gap-2 mt-6 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-              <Sliders className="w-4 h-4 text-purple-500/60" />
-              <span>Simular Renato Mota</span>
-            </div>
+
+            <form onSubmit={handleRealLogin} className="space-y-4 text-xs">
+              <div className="space-y-2">
+                <label className="text-slate-550 font-bold uppercase tracking-wider text-[10px]">E-mail Corporativo</label>
+                <input 
+                  type="email" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="nome@azuos.com.br"
+                  className="w-full bg-[#F8FAF8] border border-slate-200 rounded-xl p-3.5 text-slate-800 focus:outline-none focus:border-[#30728d] transition-all text-xs"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-slate-550 font-bold uppercase tracking-wider text-[10px]">Senha</label>
+                <input 
+                  type="password" 
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full bg-[#F8FAF8] border border-slate-200 rounded-xl p-3.5 text-slate-800 focus:outline-none focus:border-[#30728d] transition-all text-xs"
+                />
+              </div>
+
+              {loginError && (
+                <div className="p-3 bg-rose-50 border border-rose-100 rounded-xl text-rose-700 text-[11px] flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                  <span>{loginError}</span>
+                </div>
+              )}
+
+              <button 
+                type="submit" 
+                disabled={submitting}
+                className="w-full py-4 rounded-xl bg-[#30728d] text-white font-bold uppercase tracking-widest hover:bg-[#30728d]/95 transition-all flex items-center justify-center gap-1 text-[11px] disabled:opacity-50 cursor-pointer"
+              >
+                {submitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" /> Verificando Credenciais...
+                  </>
+                ) : (
+                  <>
+                    Entrar com Supabase Auth <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </form>
           </div>
+
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="px-8 py-12 text-center text-xs text-slate-600 border-t border-slate-900/60 relative z-10 max-w-7xl mx-auto">
+      <footer className="px-8 py-16 text-center text-xs text-slate-400 border-t border-slate-200 relative z-10 max-w-7xl mx-auto">
         <p>Azuos Workflow Manager &copy; 2026. Desenvolvido sob a filosofia de Privacy by Design.</p>
-        <p className="text-[10px] text-slate-700 mt-2">Conformidade garantida com LGPD e diretrizes de riscos psicossociais da NR-01.</p>
+        <p className="text-[10px] text-slate-400 mt-2">Conformidade garantida com as diretrizes de privacidade LGPD e saúde ocupacional NR-01.</p>
       </footer>
     </div>
   );

@@ -21,26 +21,25 @@ interface HeaderProps {
 
 export default function Header({ title, userName, role, isHr = false, balanceHours, isEligible = true }: HeaderProps) {
   return (
-    <header className="h-16 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 px-8 flex items-center justify-between sticky top-0 z-20">
+    <header className="h-16 bg-[#30728d]/95 backdrop-blur-md border-b border-[#6CBED9]/20 px-8 flex items-center justify-between sticky top-0 z-20">
       <div>
-        <h2 className="text-lg font-bold text-slate-100">{title}</h2>
-        <p className="text-xs text-slate-500">
-          Olá, <span className="text-[#6CBED9] font-semibold">{userName}</span>. Bem-vindo ao Azuos.
+        <h2 className="text-lg font-bold text-[#F8FAF8]">{title}</h2>
+        <p className="text-xs text-[#D6EBEF]">
+          Olá, <span className="text-[#aaffd8] font-semibold">{userName}</span>. Bem-vindo ao Azuos.
         </p>
       </div>
 
       <div className="flex items-center gap-6">
         {/* Indicador de Créditos (Visível apenas para Colaborador) */}
         {role === 'collaborator' && !isHr && typeof balanceHours === 'number' && (
-          <div className="flex items-center gap-3 bg-slate-950 px-4 py-1.5 rounded-full border border-slate-850">
+          <div className="flex items-center gap-3 bg-[#1f4f62] px-4 py-1.5 rounded-full border border-[#6CBED9]/20">
             <Clock className="w-4 h-4 text-[#aaffd8]" />
             <div className="text-xs">
-              <span className="text-slate-500 font-medium">Saldo Semanal: </span>
-              <span className="text-slate-200 font-bold">{balanceHours.toFixed(1)}h</span>
-              <span className="text-slate-500"> / 8.0h</span>
+              <span className="text-[#d6ebef] font-medium">Saldo Semanal: </span>
+              <span className="text-[#ffffff] font-bold">{balanceHours.toFixed(1)}h</span>
+              <span className="text-[#d6ebef]"> / 8.0h</span>
             </div>
-            {/* Barra de Progresso Circular ou Linha Simplificada */}
-            <div className="w-16 bg-slate-800 h-1.5 rounded-full overflow-hidden">
+            <div className="w-16 bg-[#30627d] h-1.5 rounded-full overflow-hidden">
               <div 
                 className="bg-gradient-to-r from-[#6CBED9] to-[#aaffd8] h-full transition-all duration-300"
                 style={{ width: `${(balanceHours / 8) * 100}%` }}
@@ -87,13 +86,13 @@ export default function Header({ title, userName, role, isHr = false, balanceHou
         )}
 
         {/* Notificações e Ajuda */}
-        <div className="flex items-center gap-3 border-l border-slate-800 pl-6">
-          <button className="text-slate-400 hover:text-slate-200 transition-colors p-1.5 hover:bg-slate-800 rounded-lg relative">
+        <div className="flex items-center gap-3 border-l border-[#6CBED9]/20 pl-6">
+          <button className="text-[#d6ebef] hover:text-white transition-colors p-1.5 hover:bg-[#6CBED9]/10 rounded-lg relative">
             <Bell className="w-4.5 h-4.5" />
-            <span className="absolute top-1 right-1 w-2 h-2 bg-[#aaffd8] rounded-full ring-2 ring-slate-900" />
+            <span className="absolute top-1 right-1 w-2 h-2 bg-[#aaffd8] rounded-full ring-2 ring-[#30728d]" />
           </button>
           <button 
-            className="text-slate-400 hover:text-slate-200 transition-colors p-1.5 hover:bg-slate-800 rounded-lg"
+            className="text-[#d6ebef] hover:text-white transition-colors p-1.5 hover:bg-[#6CBED9]/10 rounded-lg"
             title="Conformidade NR-01 & LGPD"
           >
             <HelpCircle className="w-4.5 h-4.5" />

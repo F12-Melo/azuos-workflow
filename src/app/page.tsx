@@ -21,11 +21,11 @@ import {
   LockKeyhole
 } from 'lucide-react';
 
-export default function LandoLandingPage() {
+export default function AzuosLandingPage() {
   const router = useRouter();
   const { signIn, profile, loading } = useAuth();
   
-  // Estados para simulações interativas na Landing Page (Lando Norris style - Light Mode)
+  // Estados para simulações interativas da landing page Azuos
   const [simulatedCredits, setSimulatedCredits] = useState(8.0);
   const [privacyMode, setPrivacyMode] = useState<'traditional' | 'azuos'>('azuos');
   const [selectedFeature, setSelectedFeature] = useState<number>(0);
@@ -74,13 +74,10 @@ export default function LandoLandingPage() {
     setLoginError('');
     if (role === 'colaborador') {
       setEmail('colaborador@azuos.com.br');
-      setPassword('password123');
     } else if (role === 'gestor') {
       setEmail('gestor@azuos.com.br');
-      setPassword('password123');
     } else if (role === 'rh') {
       setEmail('rh@azuos.com.br');
-      setPassword('password123');
     }
   };
 
@@ -112,11 +109,11 @@ export default function LandoLandingPage() {
   return (
     <div className="min-h-screen bg-[#F8FAF8] text-slate-800 font-sans relative overflow-x-hidden selection:bg-[#aaffd8] selection:text-slate-900">
       
-      {/* Background Gradients (Tema Claro Premium com cores do projeto) */}
+      {/* Background Gradients com a paleta Azuos */}
       <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[50%] bg-[#6CBED9]/5 rounded-full blur-[150px] pointer-events-none animate-glow" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[50%] bg-[#30728d]/5 rounded-full blur-[150px] pointer-events-none animate-glow" />
 
-      {/* 1. Header Premium */}
+      {/* 1. Header */}
       <header className="px-8 py-6 max-w-7xl mx-auto flex items-center justify-between border-b border-slate-200/80 backdrop-blur-md relative z-10">
         <div className="flex items-center gap-3">
           {/* ESPAÇO PARA O LOGO EM PNG DO USUÁRIO */}
@@ -159,10 +156,10 @@ export default function LandoLandingPage() {
         </div>
       </header>
 
-      {/* 2. Hero Section (Tema Claro Estilo Lando Norris) */}
+      {/* 2. Hero Section com identidade Azuos */}
       <section className="relative z-10 px-8 py-24 max-w-7xl mx-auto flex flex-col items-center text-center">
         {/* Badge Flutuante */}
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 text-xs text-slate-655 mb-8 shadow-sm">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 text-xs text-slate-500 mb-8 shadow-sm">
           <Sparkles className="w-4 h-4 text-[#30728d]" />
           <span>Gestão por resultados e autonomia flexível</span>
         </div>
@@ -355,8 +352,8 @@ export default function LandoLandingPage() {
               <h3 className="text-xl font-extrabold text-[#30728d] flex items-center gap-2">
                 <Sliders className="w-5 h-5 text-[#30728d]" /> Contas de Testes
               </h3>
-              <p className="text-xs text-slate-500 mt-2">
-                Clique em um dos perfis abaixo para preencher o formulário automaticamente com o e-mail de teste correspondente:
+              <p className="text-xs text-[#486575] mt-2">
+                Clique em um dos perfis abaixo para preencher o e-mail de teste correspondente:
               </p>
             </div>
 
@@ -404,8 +401,8 @@ export default function LandoLandingPage() {
               </button>
             </div>
 
-            <div className="p-4 bg-[#F8FAF8] rounded-xl border border-slate-200 text-[10px] text-slate-500 leading-relaxed">
-              * Nota: A senha de todos os usuários no Supabase deve ser configurada como <strong className="text-slate-700 font-bold">password123</strong> para corresponder aos testes rápidos do formulário.
+                <div className="p-4 bg-[#F8FAF8] rounded-xl border border-[#d9e7ef] text-[10px] text-[#486575] leading-relaxed">
+              Autenticação segura: use as credenciais reais do Supabase e mantenha as senhas protegidas.
             </div>
           </div>
 

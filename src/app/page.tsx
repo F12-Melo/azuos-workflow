@@ -18,7 +18,8 @@ import {
   CheckCircle,
   FileCheck,
   Loader2,
-  LockKeyhole
+  LockKeyhole,
+  AlertCircle
 } from 'lucide-react';
 
 export default function AzuosLandingPage() {

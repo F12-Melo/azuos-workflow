@@ -88,7 +88,7 @@
 }
 
 .dark {
-  --background: #102a38;
+  --background: #0d2230;
   --foreground: #f8faf8;
   --card: #1c435a;
   --card-foreground: #f8faf8;
@@ -96,14 +96,14 @@
   --popover-foreground: #f8faf8;
   --primary: #6CBED9;
   --primary-foreground: #102a38;
-  --secondary: #aaffd8;
+  --secondary: #AAFFD8;
   --secondary-foreground: #102a38;
-  --muted: #22475f;
+  --muted: #20485f;
   --muted-foreground: #b8dfe5;
-  --accent: #30728d;
+  --accent: #3B88A7;
   --accent-foreground: #f8faf8;
   --destructive: #f17d88;
-  --border: #1f4360;
+  --border: #2d637c;
   --input: #15354a;
   --ring: #6CBED9;
   --chart-1: #aaffd8;

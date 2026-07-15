@@ -148,18 +148,18 @@ export default function RHDashboard() {
 
   return (
     <div className="space-y-8 relative text-slate-805">
-      {/* Header */}
-      <div>
-        <span className="text-[10px] bg-[#6CBED9]/25 text-[#30728d] font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-[#30728d]/20">
-          Departamento de Auditoria & Conformidade
-        </span>
-        <h1 className="text-3xl font-black uppercase tracking-tight text-slate-800 mt-2">
-          Painel de Recursos Humanos
-        </h1>
-        <p className="text-xs text-slate-500 mt-1">
-          Monitoramento de elegibilidade de acesso, controle confidencial de atestados médicos e chamados legais (LGPD e NR-01).
-        </p>
-      </div>
+        {/* Header */}
+        <div>
+          <span className="text-[10px] bg-[#6CBED9]/25 text-[#30728d] font-bold px-3 py-1 rounded-full uppercase tracking-widest border border-[#30728d]/20">
+            Departamento de Auditoria & Conformidade
+          </span>
+          <h1 className="text-3xl font-black uppercase tracking-tight text-slate-800 mt-2">
+            Painel de Recursos Humanos
+          </h1>
+          <p className="text-xs text-slate-500 mt-1">
+            Monitoramento de elegibilidade de acesso, controle confidencial de atestados médicos e chamados legais (LGPD e NR-01).
+          </p>
+        </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">

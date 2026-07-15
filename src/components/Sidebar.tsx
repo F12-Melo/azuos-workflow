@@ -58,14 +58,14 @@ export default function Sidebar({ userName, userEmail, role, isHr = false }: Sid
   return (
     <aside className="w-64 bg-[#30728d] border-r border-[#6CBED9]/30 text-[#F8FAF8] flex flex-col h-screen fixed left-0 top-0 z-30">
       <div className="p-6 border-b border-[#6CBED9]/20 flex items-center gap-3">
-        <div className="bg-gradient-to-br from-[#6CBED9] to-[#aaffd8] text-[#102a38] p-2 rounded-lg font-bold flex items-center justify-center shadow-md">
-          <Coffee className="w-5 h-5" />
+        <div>
+          <img src="/logo_notitle.png" alt="Azuos Logo" className="w-20 h-20 object-contain" />
         </div>
         <div>
           <h1 className="font-extrabold text-lg bg-gradient-to-r from-[#6CBED9] to-[#aaffd8] bg-clip-text text-transparent">
             AZUOS
           </h1>
-          <p className="text-[10px] text-slate-500 uppercase tracking-widest font-semibold">
+          <p className="text-[10px] text-[#FFFFFF] uppercase tracking-widest font-semibold">
             Workflow Manager
           </p>
         </div>

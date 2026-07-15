@@ -120,7 +120,7 @@ export default function AzuosLandingPage() {
           {/* Top logo sem borda, simples e transparente */}
           <div className="relative w-10 h-10 flex items-center justify-center overflow-hidden">
             <img
-              src="/logo.png"
+              src="/logo_notitle.png"
               alt="Azuos Logo"
               className="w-full h-full object-contain"
               onError={(e) => { e.currentTarget.style.display = 'none'; }}

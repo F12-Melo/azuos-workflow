@@ -214,7 +214,7 @@ export default function ColaboradorDashboard() {
 
       // Registrar transação de crédito e atualizar saldo
       if (category !== 'medical') {
-        await supabase.from('credit_transactions').insert({
+        const { error: transactionError } = await supabase.from('credit_transactions').insert({
           user_id: profile!.id,
           week_start: new Date().toISOString().split('T')[0],
           amount: -durationHours,
@@ -222,12 +222,25 @@ export default function ColaboradorDashboard() {
           flex_block_id: blockInsert.id
         });
 
+        if (transactionError) {
+          console.error('Erro ao registrar transação de crédito:', transactionError);
+          throw transactionError;
+        }
+
         const newBal = Math.max(0, balance - durationHours);
-        await supabase
+        const { data: updatedBalance, error: balanceError } = await supabase
           .from('credit_balances')
           .update({ hours_available: newBal })
-          .eq('user_id', profile!.id);
-        setBalance(newBal);
+          .eq('user_id', profile!.id)
+          .select()
+          .maybeSingle();
+
+        if (balanceError) {
+          console.error('Erro ao atualizar saldo de crédito:', balanceError);
+          throw balanceError;
+        }
+
+        setBalance(updatedBalance?.hours_available ?? newBal);
       }
 
       // Resetar form

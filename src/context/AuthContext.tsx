@@ -74,31 +74,57 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const fetchProfile = async (uid: string, email: string) => {
     try {
-      const { data, error } = await supabase
+      const { data, error, status } = await supabase
         .from('users')
         .select('*')
         .eq('auth_uid', uid)
-        .single();
+        .maybeSingle();
 
       if (error) {
-        console.error('Perfil correspondente não encontrado no banco de dados para o auth_uid:', uid);
-        setProfile(null);
-      } else if (data) {
-        // Buscar nome do gestor se houver manager_id
-        let managerName = '';
-        if (data.manager_id && data.manager_id !== data.id) {
-          const { data: mgrData } = await supabase
-            .from('users')
-            .select('name')
-            .eq('id', data.manager_id)
-            .single();
-          if (mgrData) managerName = mgrData.name;
-        }
-        setProfile({
-          ...data,
-          manager_name: managerName || 'N/A'
-        });
+        console.error('Erro ao consultar perfil por auth_uid:', { uid, status, message: error.message });
       }
+
+      if (!data) {
+        console.warn('Nenhum perfil encontrado usando auth_uid, tentando fallback por e-mail:', { uid, email });
+        if (email) {
+          const { data: emailData, error: emailError, status: emailStatus } = await supabase
+            .from('users')
+            .select('*')
+            .eq('email', email)
+            .maybeSingle();
+
+          if (emailError) {
+            console.error('Erro ao consultar perfil por email:', { email, emailStatus, message: emailError.message });
+          }
+
+          if (emailData) {
+            setProfile({
+              ...emailData,
+              manager_name: '',
+            });
+            return;
+          }
+        }
+
+        setProfile(null);
+        return;
+      }
+
+      // Buscar nome do gestor se houver manager_id
+      let managerName = '';
+      if (data.manager_id && data.manager_id !== data.id) {
+        const { data: mgrData } = await supabase
+          .from('users')
+          .select('name')
+          .eq('id', data.manager_id)
+          .maybeSingle();
+        if (mgrData) managerName = mgrData.name;
+      }
+
+      setProfile({
+        ...data,
+        manager_name: managerName || 'N/A'
+      });
     } catch (err) {
       console.error('Erro ao buscar perfil:', err);
       setProfile(null);

@@ -110,47 +110,42 @@ export default function AzuosLandingPage() {
   return (
     <div className="min-h-screen bg-[#F8FAF8] text-slate-800 font-sans relative overflow-x-hidden selection:bg-[#aaffd8] selection:text-slate-900">
       
-      {/* Background Gradients com a paleta Azuos */}
+      {/* Background Gradients com a paleta Azuos 
       <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[50%] bg-[#6CBED9]/5 rounded-full blur-[150px] pointer-events-none animate-glow" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[50%] bg-[#30728d]/5 rounded-full blur-[150px] pointer-events-none animate-glow" />
-
+        */}
       {/* 1. Header */}
       <header className="px-8 py-6 max-w-7xl mx-auto flex items-center justify-between border-b border-slate-200/80 backdrop-blur-md relative z-10">
         <div className="flex items-center gap-3">
-          {/* ESPAÇO PARA O LOGO EM PNG DO USUÁRIO */}
-          <div className="relative w-10 h-10 flex items-center justify-center rounded-xl bg-gradient-to-br from-[#6CBED9] to-[#30728d] text-white font-bold shadow-md overflow-hidden">
-            {/* 
-              <img 
-                src="/logo.png" 
-                alt="Azuos Logo" 
-                className="w-full h-full object-contain" 
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
-            */}
-            <Coffee className="w-5 h-5 text-white relative z-10" />
+          {/* Top logo sem borda, simples e transparente */}
+          <div className="relative w-10 h-10 flex items-center justify-center overflow-hidden">
+            <img
+              src="/logo.png"
+              alt="Azuos Logo"
+              className="w-full h-full object-contain"
+              onError={(e) => { e.currentTarget.style.display = 'none'; }}
+            />
           </div>
           <div>
-            <span className="font-black text-xl tracking-wider bg-gradient-to-r from-[#30728d] to-[#6CBED9] bg-clip-text text-transparent">
+            <span className="font-black text-xl tracking-wider text-[var(--azuos-blue)]">
               AZUOS
             </span>
-            <span className="block text-[8px] text-[#30728d] uppercase tracking-widest font-bold mt-0.5">
+            <span className="block text-[8px] text-[var(--azuos-blue)] uppercase tracking-widest font-bold mt-0.5">
               Workflow Manager
             </span>
           </div>
         </div>
 
         <nav className="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-wider text-slate-500">
-          <a href="#features" className="hover:text-[#30728d] transition-colors">Diferenciais</a>
-          <a href="#demo" className="hover:text-[#30728d] transition-colors">Simulador</a>
-          <a href="#acesso" className="hover:text-[#30728d] transition-colors">Entrar</a>
+          <a href="#features" className="hover:text-[var(--azuos-blue)] transition-colors">Diferenciais</a>
+          <a href="#demo" className="hover:text-[var(--azuos-blue)] transition-colors">Simulador</a>
+          <a href="#acesso" className="hover:text-[var(--azuos-blue)] transition-colors">Entrar</a>
         </nav>
 
         <div>
-          <a 
-            href="#acesso" 
-            className="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-[#30728d] text-white hover:bg-[#30728d]/95 transition-all duration-300 shadow-md shadow-[#30728d]/10 hover:scale-102"
+          <a
+            href="#acesso"
+            className="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider bg-gradient-to-br from-[var(--azuos-blue)] to-[var(--azuos-green)] text-white hover:opacity-95 transition-all duration-300 shadow-md shadow-[var(--azuos-blue)]/10 hover:scale-102"
           >
             Acessar Painel
           </a>
@@ -158,33 +153,50 @@ export default function AzuosLandingPage() {
       </header>
 
       {/* 2. Hero Section com identidade Azuos */}
-      <section className="relative z-10 px-8 py-24 max-w-7xl mx-auto flex flex-col items-center text-center">
+        {/* 2. Hero Section com identidade Azuos */}
+        {/* Full-bleed logo hero: branco puro que ocupa 100vh */}
+        <div className="w-full h-screen bg-white flex items-center justify-center overflow-hidden relative">
+          <img
+            src="/logo_landing_page.png"
+            alt="Azuos Logo"
+            className="w-full h-full object-contain"
+            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+          />
+          {/* gradiente de transição para o resto da página (visível ao rolar) */}
+          <div className="absolute bottom-0 left-0 w-full h-40 pointer-events-none"
+            style={{ background: 'linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(248,250,248,1) 100%)' }}
+          />
+        </div>
+
+        <section className="relative z-10 px-8 py-24 max-w-7xl mx-auto flex flex-col items-center text-center">
         {/* Badge Flutuante */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-slate-200 text-xs text-slate-500 mb-8 shadow-sm">
-          <Sparkles className="w-4 h-4 text-[#30728d]" />
+          <Sparkles className="w-4 h-4 text-[var(--azuos-blue)]" />
           <span>Gestão por resultados e autonomia flexível</span>
         </div>
 
+          {/* Espaço reservado acima transformado em full-bleed hero */}
+
         {/* Headline Titânica Estilo Norris em Tema Claro */}
-        <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none max-w-5xl select-none text-[#30728d]">
+        <h1 className="text-5xl md:text-8xl font-black tracking-tighter uppercase leading-none max-w-5xl select-none text-[var(--azuos-blue)]">
           <span>PRODUTIVIDADE SEM</span>
-          <span 
+          <span
             className="block text-transparent transition-all duration-300"
-            style={{ WebkitTextStroke: '2px #30728d' }}
+            style={{ WebkitTextStroke: `2px var(--azuos-blue)` }}
           >
             VIGILÂNCIA INVASIVA
           </span>
         </h1>
 
         <p className="text-slate-600 text-sm md:text-base max-w-2xl mt-8 leading-relaxed">
-          Substitua o monitoramento ostensivo por um ecossistema semanal baseado em créditos de tempo. Segurança jurídica completa alinhada à <strong className="text-[#30728d]">LGPD</strong> e à <strong className="text-[#30728d]">NR-01</strong> com autonomia para o colaborador.
+          Substitua o monitoramento ostensivo por um ecossistema semanal baseado em créditos de tempo. Segurança jurídica completa alinhada à <strong className="text-[var(--azuos-blue)]">LGPD</strong> e à <strong className="text-[var(--azuos-blue)]">NR-01</strong> com autonomia para o colaborador.
         </p>
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-4 mt-12 w-full sm:w-auto">
-          <a 
-            href="#acesso" 
-            className="px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest bg-[#30728d] text-white hover:bg-[#30728d]/95 transition-all duration-300 flex items-center justify-center gap-2 group shadow-lg shadow-[#30728d]/10"
+          <a
+            href="#acesso"
+            className="px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest bg-gradient-to-br from-[var(--azuos-blue)] to-[var(--azuos-green)] text-white hover:opacity-95 transition-all duration-300 flex items-center justify-center gap-2 group shadow-lg shadow-[var(--azuos-blue)]/10"
           >
             Acessar Dashboard
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -202,7 +214,7 @@ export default function AzuosLandingPage() {
       <section id="features" className="relative z-10 px-8 py-20 max-w-7xl mx-auto border-t border-slate-200">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <p className="text-xs font-bold uppercase text-[#30728d] tracking-widest mb-2">Pilares do Azuos</p>
+            <p className="text-xs font-bold uppercase text-[var(--azuos-blue)] tracking-widest mb-2">Pilares do Azuos</p>
             <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-slate-850">
               Autonomia & Privacidade
             </h2>
@@ -218,14 +230,14 @@ export default function AzuosLandingPage() {
                     onClick={() => setSelectedFeature(index)}
                     className={`p-5 rounded-2xl border transition-all duration-300 cursor-pointer ${
                       isSelected 
-                        ? 'bg-white border-[#30728d]/30 shadow-md' 
+                        ? 'bg-white border-[var(--azuos-blue)]/30 shadow-md' 
                         : 'bg-white/60 border-slate-200 hover:border-slate-350'
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className={`p-2 rounded-lg ${
-                          isSelected ? 'bg-[#30728d]/10 text-[#30728d]' : 'bg-slate-100 text-slate-400'
+                          isSelected ? 'bg-[var(--azuos-blue)]/10 text-[var(--azuos-blue)]' : 'bg-slate-100 text-slate-400'
                         }`}>
                           <Icon className="w-5 h-5" />
                         </div>
@@ -248,7 +260,7 @@ export default function AzuosLandingPage() {
 
           {/* Simulador Interativo */}
           <div id="demo" className="bg-white border border-slate-200 p-8 rounded-3xl relative shadow-md">
-            <div className="absolute -top-3 -right-3 bg-gradient-to-r from-[#6CBED9] to-[#30728d] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-lg">
+            <div className="absolute -top-3 -right-3 bg-gradient-to-r from-[var(--azuos-blue)] to-[var(--azuos-green)] text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-lg">
               <Sparkles className="w-3 h-3" /> Interativo
             </div>
 
@@ -269,7 +281,7 @@ export default function AzuosLandingPage() {
                   </button>
                   <button 
                     onClick={() => handleSimulatePause(2.0)}
-                    className="px-3 py-1.5 text-[10px] font-semibold bg-[#30728d]/10 text-[#30728d] border border-[#30728d]/20 hover:bg-[#30728d]/20 rounded-lg transition-all cursor-pointer"
+                    className="px-3 py-1.5 text-[10px] font-semibold bg-[var(--azuos-blue)]/10 text-[var(--azuos-blue)] border border-[var(--azuos-blue)]/20 hover:bg-[var(--azuos-blue)]/20 rounded-lg transition-all cursor-pointer"
                   >
                     Ausência -2.0h
                   </button>
@@ -284,16 +296,16 @@ export default function AzuosLandingPage() {
                     <button 
                       onClick={() => setPrivacyMode('traditional')}
                       className={`px-3 py-1 text-[10px] font-semibold rounded-md transition-all cursor-pointer ${
-                        privacyMode === 'traditional' ? 'bg-rose-100 text-rose-700' : 'text-slate-400'
-                      }`}
+                          privacyMode === 'traditional' ? 'bg-[var(--azuos-blue)]/10 text-[var(--azuos-blue)]' : 'text-slate-400'
+                        }`}
                     >
-                      Invasivo
+                        Invasivo
                     </button>
                     <button 
                       onClick={() => setPrivacyMode('azuos')}
-                      className={`px-3 py-1 text-[10px] font-semibold rounded-md transition-all cursor-pointer ${
-                        privacyMode === 'azuos' ? 'bg-[#30728d]/10 text-[#30728d]' : 'text-slate-400'
-                      }`}
+                        className={`px-3 py-1 text-[10px] font-semibold rounded-md transition-all cursor-pointer ${
+                          privacyMode === 'azuos' ? 'bg-[var(--azuos-green)]/10 text-[var(--azuos-green)]' : 'text-slate-400'
+                        }`}
                     >
                       Azuos
                     </button>
@@ -303,10 +315,10 @@ export default function AzuosLandingPage() {
                 <div className="bg-[#F8FAF8] p-5 rounded-2xl border border-slate-200">
                   {privacyMode === 'traditional' ? (
                     <div className="space-y-2 text-xs">
-                      <p className="text-rose-600 font-bold flex items-center gap-1.5">
+                      <p className="text-[var(--azuos-blue)] font-bold flex items-center gap-1.5">
                         <EyeOff className="w-3.5 h-3.5" /> Monitoramento Tradicional (Espionagem)
                       </p>
-                      <div className="bg-white border border-slate-200 p-3 rounded-lg font-mono text-[10px] text-rose-700 space-y-1">
+                      <div className="bg-white border border-slate-200 p-3 rounded-lg font-mono text-[10px] text-[var(--azuos-blue)] space-y-1">
                         <p>[LOG] 10:14 - Webcam ativada (Monitoramento de Olhos)</p>
                         <p>[LOG] 10:15 - Captura de tela registrada (Janela ativa: Outlook)</p>
                         <p>[LOG] 10:16 - Alerta: Gabriela inativa por mais de 3 minutos</p>
@@ -314,12 +326,12 @@ export default function AzuosLandingPage() {
                     </div>
                   ) : (
                     <div className="space-y-2 text-xs">
-                      <p className="text-emerald-700 font-bold flex items-center gap-1.5">
-                        <Eye className="w-3.5 h-3.5 text-emerald-600" /> Visão Azuos (Privacy by Design)
+                      <p className="text-[var(--azuos-green)] font-bold flex items-center gap-1.5">
+                        <Eye className="w-3.5 h-3.5 text-[var(--azuos-green)]" /> Visão Azuos (Privacy by Design)
                       </p>
                       <div className="bg-white border border-slate-200 p-3 rounded-lg font-mono text-[10px] text-slate-650 space-y-1">
-                        <p className="text-emerald-750 flex items-center gap-1.5 font-semibold">
-                          <CheckCircle className="w-3 h-3 text-emerald-600" />
+                        <p className="text-[var(--azuos-green)] flex items-center gap-1.5 font-semibold">
+                          <CheckCircle className="w-3 h-3 text-[var(--azuos-green)]" />
                           <span>10:00 - 12:00: Bloco Reservado (Consulta Médica)</span>
                         </p>
                         <p className="text-slate-400">Sem rastreamento de webcam, telas ou teclas.</p>
@@ -336,7 +348,7 @@ export default function AzuosLandingPage() {
       {/* 4. Login Real com Supabase Auth */}
       <section id="acesso" className="relative z-10 px-8 py-24 max-w-7xl mx-auto border-t border-slate-200">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="text-xs font-bold uppercase text-[#30728d] tracking-widest mb-2">Portal Corporativo</p>
+          <p className="text-xs font-bold uppercase text-[var(--azuos-blue)] tracking-widest mb-2">Portal Corporativo</p>
           <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-slate-850">
             Acessar o Painel
           </h2>
@@ -350,8 +362,8 @@ export default function AzuosLandingPage() {
           {/* Contas de Avaliação */}
           <div className="bg-white border border-slate-200 p-8 rounded-3xl flex flex-col justify-between space-y-6 shadow-md">
             <div>
-              <h3 className="text-xl font-extrabold text-[#30728d] flex items-center gap-2">
-                <Sliders className="w-5 h-5 text-[#30728d]" /> Contas de Testes
+              <h3 className="text-xl font-extrabold text-[var(--azuos-blue)] flex items-center gap-2">
+                <Sliders className="w-5 h-5 text-[var(--azuos-blue)]" /> Contas de Testes
               </h3>
               <p className="text-xs text-[#486575] mt-2">
                 Clique em um dos perfis abaixo para preencher o e-mail de teste correspondente:
@@ -362,13 +374,13 @@ export default function AzuosLandingPage() {
               {/* Colaborador */}
               <button 
                 onClick={() => handleQuickFill('colaborador')}
-                className="w-full text-left p-4 bg-[#F8FAF8] border border-slate-200 hover:border-[#6CBED9] rounded-2xl flex items-center justify-between group transition-all cursor-pointer"
+                className="w-full text-left p-4 bg-[#F8FAF8] border border-slate-200 hover:border-[var(--azuos-blue)] rounded-2xl flex items-center justify-between group transition-all cursor-pointer"
               >
                 <div>
-                  <h4 className="font-bold text-sm text-slate-800 group-hover:text-[#30728d]">Portal do Colaborador</h4>
+                  <h4 className="font-bold text-sm text-slate-800 group-hover:text-[var(--azuos-blue)]">Portal do Colaborador</h4>
                   <p className="text-[10px] text-slate-500 mt-1">colaborador@azuos.com.br</p>
                 </div>
-                <div className="p-2 bg-[#6CBED9]/10 text-[#30728d] rounded-xl">
+                <div className="p-2 bg-[var(--azuos-blue)]/10 text-[var(--azuos-blue)] rounded-xl">
                   <User className="w-4 h-4" />
                 </div>
               </button>
@@ -376,13 +388,13 @@ export default function AzuosLandingPage() {
               {/* Gestor */}
               <button 
                 onClick={() => handleQuickFill('gestor')}
-                className="w-full text-left p-4 bg-[#F8FAF8] border border-slate-200 hover:border-[#6CBED9] rounded-2xl flex items-center justify-between group transition-all cursor-pointer"
+                className="w-full text-left p-4 bg-[#F8FAF8] border border-slate-200 hover:border-[var(--azuos-blue)] rounded-2xl flex items-center justify-between group transition-all cursor-pointer"
               >
                 <div>
-                  <h4 className="font-bold text-sm text-slate-805 group-hover:text-[#30728d]">Portal do Gestor</h4>
+                  <h4 className="font-bold text-sm text-slate-805 group-hover:text-[var(--azuos-blue)]">Portal do Gestor</h4>
                   <p className="text-[10px] text-slate-500 mt-1">gestor@azuos.com.br</p>
                 </div>
-                <div className="p-2 bg-[#30728d]/10 text-[#30728d] rounded-xl">
+                <div className="p-2 bg-[var(--azuos-blue)]/10 text-[var(--azuos-blue)] rounded-xl">
                   <Shield className="w-4 h-4" />
                 </div>
               </button>
@@ -390,13 +402,13 @@ export default function AzuosLandingPage() {
               {/* RH */}
               <button 
                 onClick={() => handleQuickFill('rh')}
-                className="w-full text-left p-4 bg-[#F8FAF8] border border-slate-200 hover:border-[#6CBED9] rounded-2xl flex items-center justify-between group transition-all cursor-pointer"
+                className="w-full text-left p-4 bg-[#F8FAF8] border border-slate-200 hover:border-[var(--azuos-blue)] rounded-2xl flex items-center justify-between group transition-all cursor-pointer"
               >
                 <div>
-                  <h4 className="font-bold text-sm text-slate-805 group-hover:text-[#30728d]">Portal do RH</h4>
+                  <h4 className="font-bold text-sm text-slate-805 group-hover:text-[var(--azuos-blue)]">Portal do RH</h4>
                   <p className="text-[10px] text-slate-500 mt-1">rh@azuos.com.br</p>
                 </div>
-                <div className="p-2 bg-emerald-50 text-emerald-700 rounded-xl border border-emerald-100">
+                <div className="p-2 bg-[var(--azuos-green)]/10 text-[var(--azuos-green)] rounded-xl border border-[var(--azuos-green)]/20">
                   <FileCheck className="w-4 h-4" />
                 </div>
               </button>
@@ -410,7 +422,7 @@ export default function AzuosLandingPage() {
           {/* Form Real Supabase Auth */}
           <div className="bg-white border border-slate-200 p-8 rounded-3xl flex flex-col justify-center shadow-md text-slate-700">
             <h3 className="text-xl font-extrabold text-slate-805 mb-6 flex items-center gap-2">
-              <LockKeyhole className="w-5 h-5 text-[#30728d]" /> Credenciais Supabase Auth
+              <LockKeyhole className="w-5 h-5 text-[var(--azuos-blue)]" /> Credenciais Supabase Auth
             </h3>
 
             <form onSubmit={handleRealLogin} className="space-y-4 text-xs">
@@ -421,7 +433,7 @@ export default function AzuosLandingPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="nome@azuos.com.br"
-                  className="w-full bg-[#F8FAF8] border border-slate-200 rounded-xl p-3.5 text-slate-800 focus:outline-none focus:border-[#30728d] transition-all text-xs"
+                  className="w-full bg-[#F8FAF8] border border-slate-200 rounded-xl p-3.5 text-slate-800 focus:outline-none focus:border-[var(--azuos-blue)] transition-all text-xs"
                 />
               </div>
 
@@ -432,7 +444,7 @@ export default function AzuosLandingPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full bg-[#F8FAF8] border border-slate-200 rounded-xl p-3.5 text-slate-800 focus:outline-none focus:border-[#30728d] transition-all text-xs"
+                  className="w-full bg-[#F8FAF8] border border-slate-200 rounded-xl p-3.5 text-slate-800 focus:outline-none focus:border-[var(--azuos-blue)] transition-all text-xs"
                 />
               </div>
 
@@ -446,7 +458,7 @@ export default function AzuosLandingPage() {
               <button 
                 type="submit" 
                 disabled={submitting}
-                className="w-full py-4 rounded-xl bg-[#30728d] text-white font-bold uppercase tracking-widest hover:bg-[#30728d]/95 transition-all flex items-center justify-center gap-1 text-[11px] disabled:opacity-50 cursor-pointer"
+                className="w-full py-4 rounded-xl bg-gradient-to-br from-[var(--azuos-blue)] to-[var(--azuos-green)] text-white font-bold uppercase tracking-widest hover:opacity-95 transition-all flex items-center justify-center gap-1 text-[11px] disabled:opacity-50 cursor-pointer"
               >
                 {submitting ? (
                   <>
